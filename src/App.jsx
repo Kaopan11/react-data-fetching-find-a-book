@@ -1,44 +1,43 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import "./App.css";
 
 function App() {
+  const [searchText, setSearchText] = useState("");
+  const [books, setBooks] = useState([]);
 
-const [searchText, setSearchText] = useState("");
-const [books, setBooks] = useState([]);
+  useEffect(() => {
+    if (!searchText) {
+      setBooks([]);
+      return;
+    }
 
-useEffect(() => {
-  if (!searchText) {
-    setBooks([]);
-    return;
-  }
+    const url = `https://openlibrary.org/search.json?title=${encodeURIComponent(searchText)}`;
 
-  const url = `https://openlibrary.org/search.json?title=${encodeURIComponent(searchText)}`;
+    async function fetchBooks() {
+      const response = await axios.get(url);
+      setBooks(response.data.docs ?? []);
+    }
 
-  fetch(url)
-    .then((res) => res.json())
-    .then((data) => {
-      setBooks(data.docs ?? []);
-    });
-}, [searchText]);
+    fetchBooks();
+  }, [searchText]);
 
   return (
     <div className="App">
       <h1>Find a Book</h1>
-      <input 
+      <input
         type="text"
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
       />
-      <uL>
+      <ul>
         {books.map((book) => (
           <li key={book.key}>
             {book.title}
           </li>
         ))}
-      </uL>
+      </ul>
     </div>
-
-
   );
 }
 
