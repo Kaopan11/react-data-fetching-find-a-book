@@ -2,3 +2,17 @@
   font-size: x-large;
   margin-left: 20px;
 }
+
+input {
+  width: 250px;
+  padding: 6px;
+  font-size: 16px;
+}
+
+ul {
+  margin-top: 16px;
+}
+
+li {
+  margin-bottom: 6px;
+}
